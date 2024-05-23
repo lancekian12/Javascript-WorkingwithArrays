@@ -61,10 +61,11 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
 
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
     <div class="movements__row">
@@ -218,6 +219,13 @@ btnTransfer.addEventListener('click', function (e) {
     // Update UI
     updateUI(currentAccount);
   }
+});
+
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
 
 ///////////////////////////////////////
@@ -506,18 +514,18 @@ GOOD LUCK 😀
 // console.log(movements.every(deposit));
 // console.log(movements.filter(deposit));
 
-const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
-console.log(arr.flat());
+// const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+// console.log(arr.flat());
 
-const arrDeep = [
-  [
-    [1, 2, 3],
-    [4, 5, 6],
-  ],
-  7,
-  8,
-];
-console.log(arrDeep.flat(2));
+// const arrDeep = [
+//   [
+//     [1, 2, 3],
+//     [4, 5, 6],
+//   ],
+//   7,
+//   8,
+// ];
+// console.log(arrDeep.flat(2));
 
 // const accountMovements = accounts.map(acc => acc.movements);
 // console.log(accountMovements);
@@ -526,15 +534,41 @@ console.log(arrDeep.flat(2));
 // const overallBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
 // console.log(overallBalance);
 
-// Flat
-const chainMethods = accounts
-  .map(acc => acc.movements)
-  .flat()
-  .reduce((acc, mov) => acc + mov, 0);
-console.log(chainMethods);
+// // Flat
+// const chainMethods = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(chainMethods);
 
-// flatMap
-const chainMethods2 = accounts
-  .flatMap(acc => acc.movements)
-  .reduce((acc, mov) => acc + mov, 0);
-console.log(chainMethods);
+// // flatMap
+// const chainMethods2 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(chainMethods);
+
+// Strings
+const owners = ['Jonas', 'Zach', 'Adam'];
+console.log(owners.sort());
+
+// Numbers
+console.log(movements);
+// console.log(movements.sort());
+
+// return < 0, A, B
+// return > 0, B, A
+
+// // Ascending
+// movements.sort((a, b) => {
+//   if (a > b) return 1;
+//   if (b > a) return -1;
+// });
+
+movements.sort((a, b) => a - b);
+// Descending
+// movements.sort((a, b) => {
+//   if (a > b) return -1;
+//   if (b > a) return 1;
+// });
+// console.log(movements);
+movements.sort((a, b) => b - a);
