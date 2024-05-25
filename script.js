@@ -571,4 +571,7 @@ movements.sort((a, b) => a - b);
 //   if (b > a) return 1;
 // });
 // console.log(movements);
-movements.sort((a, b) => b - a);
+// movements.sort((a, b) => b - a);
+
+// console.log([1, 2, 3, 4, 5, 6, 7]);
+console.log(new Array[(1, 2, 3, 4, 5, 6, 7)]());
