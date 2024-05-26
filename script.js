@@ -41,7 +41,9 @@ const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
 const labelSumIn = document.querySelector('.summary__value--in');
 const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
+const labelSumInterest = document.querySelector(
+  '.summary__value--interest'
+);
 const labelTimer = document.querySelector('.timer');
 
 const containerApp = document.querySelector('.app');
@@ -53,18 +55,28 @@ const btnLoan = document.querySelector('.form__btn--loan');
 const btnClose = document.querySelector('.form__btn--close');
 const btnSort = document.querySelector('.btn--sort');
 
-const inputLoginUsername = document.querySelector('.login__input--user');
+const inputLoginUsername = document.querySelector(
+  '.login__input--user'
+);
 const inputLoginPin = document.querySelector('.login__input--pin');
 const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
+const inputTransferAmount = document.querySelector(
+  '.form__input--amount'
+);
+const inputLoanAmount = document.querySelector(
+  '.form__input--loan-amount'
+);
+const inputCloseUsername = document.querySelector(
+  '.form__input--user'
+);
 const inputClosePin = document.querySelector('.form__input--pin');
 
 const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? movements.slice().sort((a, b) => a - b)
+    : movements;
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
@@ -169,7 +181,10 @@ btnLoan.addEventListener('click', function (e) {
 
   const amount = Number(inputLoanAmount.value);
 
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+  if (
+    amount > 0 &&
+    currentAccount.movements.some(mov => mov >= amount * 0.1)
+  ) {
     currentAccount.movements.push(amount);
 
     updateUI(currentAccount);
@@ -548,11 +563,11 @@ GOOD LUCK 😀
 // console.log(chainMethods);
 
 // Strings
-const owners = ['Jonas', 'Zach', 'Adam'];
-console.log(owners.sort());
+// const owners = ['Jonas', 'Zach', 'Adam'];
+// console.log(owners.sort());
 
 // Numbers
-console.log(movements);
+// console.log(movements);
 // console.log(movements.sort());
 
 // return < 0, A, B
@@ -564,43 +579,101 @@ console.log(movements);
 //   if (b > a) return -1;
 // });
 
-movements.sort((a, b) => a - b);
-// Descending
-// movements.sort((a, b) => {
-//   if (a > b) return -1;
-//   if (b > a) return 1;
+// movements.sort((a, b) => a - b);
+// // Descending
+// // movements.sort((a, b) => {
+// //   if (a > b) return -1;
+// //   if (b > a) return 1;
+// // });
+// // console.log(movements);
+// // movements.sort((a, b) => b - a);
+
+// const arr = [1, 2, 3, 4, 5, 6, 7];
+// console.log(new Array((1, 2, 3, 4, 5, 6, 7)));
+
+// // Empty arrays + fill method
+// const x = new Array(7);
+// console.log(x);
+// // console.log(x.map(() => 5));
+
+// x.fill(1, 3, 5);
+// console.log(x);
+
+// arr.fill(23, 4, 6);
+// console.log(arr);
+
+// // Array.from
+// const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
+
+// const z = Array.from({ length: 7 }, (_, i) => i + 1);
+// console.log(z);
+
+// labelBalance.addEventListener('click', function () {
+//   const movementsUI = Array.from(
+//     document.querySelectorAll('.movements__value'),
+//     el => Number(el.textContent.replace('€', ''))
+//   );
+//   console.log(movementsUI);
+
+//   //Converting another way
+//   const movementsUI2 = [...document.querySelectorAll('.movements__value')];
 // });
-// console.log(movements);
-// movements.sort((a, b) => b - a);
 
-const arr = [1, 2, 3, 4, 5, 6, 7];
-console.log(new Array((1, 2, 3, 4, 5, 6, 7)));
+// 1.
+const bankDepositSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((sum, cur) => sum + cur, 0);
+console.log(bankDepositSum);
 
-// Empty arrays + fill method
-const x = new Array(7);
-console.log(x);
-// console.log(x.map(() => 5));
+// 2.
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((count, cur) => (cur >= 1000 ? ++count : count), 0);
+console.log(numDeposits1000);
 
-x.fill(1, 3, 5);
-console.log(x);
-
-arr.fill(23, 4, 6);
-console.log(arr);
-
-// Array.from
-const y = Array.from({ length: 7 }, () => 1);
-console.log(y);
-
-const z = Array.from({ length: 7 }, (_, i) => i + 1);
-console.log(z);
-
-labelBalance.addEventListener('click', function () {
-  const movementsUI = Array.from(
-    document.querySelectorAll('.movements__value'),
-    el => Number(el.textContent.replace('€', ''))
+// 3.
+const { deposits, withdrawals } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sums, cur) => {
+      // cur > 0 ? (sums.deposits += cur) : (sums.withdrawals += cur);
+      sums[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
+      return sums;
+    },
+    { deposits: 0, withdrawals: 0 }
   );
-  console.log(movementsUI);
+console.log(deposits, withdrawals);
 
-  //Converting another way
-  const movementsUI2 = [...document.querySelectorAll('.movements__value')];
-});
+// 4.
+// this is a nice title => This Is a Nice Title
+const convertTitleCase = function (title) {
+  const capitalize = str => str[0].toUpperCase() + str.slice(1);
+  const exceptions = [
+    'a',
+    'an',
+    'the',
+    'but',
+    'or',
+    'on',
+    'in',
+    'and',
+    'with',
+  ];
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word =>
+      exceptions.includes(word) ? word : capitalize(word)
+    )
+    .join(' ');
+  return capitalize(titleCase);
+};
+console.log(convertTitleCase('this is a nice title'));
+console.log(
+  convertTitleCase('this is a LONG title but not too long')
+);
+console.log(
+  convertTitleCase('and here is another title with an EXAMPLE')
+);
